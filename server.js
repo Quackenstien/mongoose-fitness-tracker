@@ -57,6 +57,20 @@ app.get("/api/workouts/range", (req, res) => {
     .catch((e) => console.error(e));
   console.log(req.body);
 });
+
+app.put("/api/workouts/:id", ({ body, params }, res) => {
+  Workout.findByIdAndUpdate(
+    params.id,
+    { $push: { exercise: body } },
+    { new: true, runValidators: true }
+  )
+    .then((data) => res.json(data))
+    .catch((err) => {
+      console.log("err", err);
+      res.json(err);
+    });
+});
+
 app.listen(PORT, function () {
   console.log(`App running on port ${PORT}!`);
 });
